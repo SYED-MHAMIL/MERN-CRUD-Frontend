@@ -1,7 +1,7 @@
 "use client"
 import { addTask, deleteTask, editTasks, fetchTasks } from '@/lib/feature/taskSlice'
 import { logOutUser } from '@/lib/feature/userSlice'
-import { setCookie } from 'cookies-next'
+import { getCookie, setCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,8 +15,16 @@ export default function Taskspage() {
      const router= useRouter()
    const  {task,error,loading,status}=useSelector(state=>state.task);
 
+    
+
       useEffect(()=>{
-           dispatch(fetchTasks())                 
+           dispatch(fetchTasks())  
+               const token=getCookie('token')     
+            console.log("toekn from cleint",token);
+            if(token == null){
+              router.push("/")
+
+            }
      },[])
 
      

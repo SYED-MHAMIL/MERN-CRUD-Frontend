@@ -8,12 +8,14 @@ export const fetchTasks = createAsyncThunk(
     'tasks/fetchTasks',
     async () => {
       const token= getCookie("token") 
-      const response = await axios.get(ApiRoutes.getTasks,{
+      const response = await axios.get(ApiRoutes.getTasks,
+        {
           headers:{
              Authorization : `Bearer ${token}`
           }
-      })
-       console.log(response.data);
+      }
+    )
+       console.log(response.data());
        
       return response.data;
     },

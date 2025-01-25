@@ -6,6 +6,7 @@ import { setCookie } from "cookies-next";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/lib/feature/userSlice";
+import Link from "next/link";
 export default function Home() {
   const [loding,setLoading]=useState(false);
   const [error,setError]=useState("");
@@ -129,12 +130,12 @@ export default function Home() {
       {/* Footer Section */}
       <p className="text-center text-sm text-gray-600">
         Don’t have an account yet?{" "}
-        <a
-          href="#"
+        <Link
+          href="/register"
           className="text-blue-600 font-medium hover:underline"
         >
           Sign up
-        </a>
+        </Link>
       </p>
     </div>
   </div>

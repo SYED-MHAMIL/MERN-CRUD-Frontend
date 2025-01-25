@@ -1,4 +1,4 @@
-npm import React, { useState } from 'react';
+ import React, { useState } from 'react';
 import {deleteTask } from '@/lib/feature/taskSlice'
 import { useDispatch } from 'react-redux';
 export default function DelButton({id}) {
