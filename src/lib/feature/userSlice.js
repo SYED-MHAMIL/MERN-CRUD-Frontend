@@ -20,8 +20,7 @@ import { createSlice } from '@reduxjs/toolkit'
     }
    } 
    
-   
-
+  
  })
 
 export const {loginUser,logOutUser}   = userSlice.actions

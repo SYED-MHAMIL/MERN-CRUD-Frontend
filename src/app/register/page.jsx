@@ -19,24 +19,39 @@ export default function Home() {
   const [error,setError]=useState("");
   const dispatch = useDispatch();
   const router = useRouter()
-
+  const [role, setRole] = useState(""); //
   const signup=async(e)=>{
     e.preventDefault()
     
         const obj={
              name: e.target[0].value,
              email : e.target[1].value,
-             password : e.target[2].value
+             password : e.target[2].value,
+             role:  role
         }
        setLoading(true)
       await  axios.post(ApiRoutes.signup, obj).then((res) => {
           console.log("res.data=>", res.data)
           console.log("token=>", res.data?.data?.token)
           setCookie('token', res?.data?.data?.token)
-          dispatch(loginUser(res.data?.data?.user))
+          dispatch(loginUser(res.data?.data?.userObj))
+          localStorage.setItem("userobj", JSON.stringify( res?.data?.data)) 
           setLoading(false)
           setMsg(res?.data?.msg)
           // router.push("/task")
+
+    console.log("role",res?.data?.data?.userObj?.role);
+    
+          if (res?.data?.data?.userObj?.role == 'admin') {
+            router.push('/admin');  // Redirect to admin dashboard
+          } else if (res?.data?.data?.userObj?.role == 'receptionist') {
+            router.push('/receptionist-dashboard');  // Redirect to receptionist dashboard
+          } else {
+            router.push('/department-dashboard');  // Redirect to department dashboard
+          }
+      
+
+
         })
           .catch((err) => {
 
@@ -123,6 +138,28 @@ export default function Home() {
           />
         </div>
 
+        <div>
+                <label
+                  htmlFor="role"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Role
+                </label>
+                <select
+                  id="role"
+                  name="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)} // Handle role selection
+                  className="block w-full p-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-800 focus:ring-blue-500 focus:border-blue-500"
+                  required
+                >
+                  <option value="">Select Role</option>
+                  <option value="admin">Admin</option>
+                  <option value="receptionist">Receptionist</option>
+                  <option value="department">Department</option>
+                </select>
+              </div>
+
         {/* Remember Me and Forgot Password */}
         <div className="flex items-center justify-between">
           <label className="flex items-center">
@@ -150,7 +187,7 @@ export default function Home() {
         >
           {loding ? "Loading..." : "Sign up"}
         </button>
-      </form>
+      </form> 
 
       {/* Footer Section */}
       <p className="text-center text-sm text-gray-600">
