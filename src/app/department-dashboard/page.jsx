@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { ApiRoutes } from "../constant/url.js";
+import { toast } from "react-toastify";
 
 const DepartmentInteraction = () => {
   const [token, setToken] = useState("");
@@ -16,9 +17,9 @@ const DepartmentInteraction = () => {
     try {
       const response = await axios.get(`${ApiRoutes.beneficary}/token/${token}`);
       setBeneficiary(response.data);
+      
     } catch (error) {
-      console.error("Error fetching beneficiary details:", error);
-      alert("Failed to fetch beneficiary details. Please check the token.");
+          toast.error("Failed to fetch beneficiary details. Please check the token.");
     }
   };
 
@@ -29,20 +30,25 @@ const DepartmentInteraction = () => {
         status,
         remarks,
       });
-      alert("Assistance status updated successfully.");
+      toast.success("Assistance status updated successfully."),{
+        
+      };
       setStatus("In Progress");
       setRemarks("");
       setBeneficiary(null);
+      setToken("")
     } catch (error) {
-      console.error("Error updating assistance status:", error);
-      alert("Failed to update assistance status.");
+        
+      toast.error("Failed to update assistance status.",{
+        position: 'top-center'
+      });
     }
   };
 
   return (
     <div className="p-6 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6 text-center">Department Interaction</h1>
-      <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
+      <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-6 text-black">
         {/* Token Input */}
         <div className="mb-4">
           <input

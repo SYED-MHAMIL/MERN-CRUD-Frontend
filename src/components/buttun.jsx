@@ -1,16 +1,39 @@
- import React, { useState } from 'react';
-import {deleteTask } from '@/lib/feature/taskSlice'
-import { useDispatch } from 'react-redux';
+ import axios from 'axios';
+import React, { useState } from 'react';
+import { ApiRoutes } from '../app/constant/url';
+import { toast } from 'react-toastify';
+
+
 export default function DelButton({id}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const dispatch=useDispatch()
+
+
+const HandleDelete=async()=>{
+ 
+  try {
+    
+      const data= await axios.delete(`${ApiRoutes.beneficary}/${id}`)
+         console.log("deleted data = = == = = = =>>>",  data);
+         
+           
+  } catch (error) {
+      console.log(error);
+      
+  }
+
+
+
+}
+
+
+
   return (
     <>
       {/* Open Modal Button */}
       <button
         type="button"
         onClick={() => setIsModalOpen(true)}
-        className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
+        className="py-2 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
       >
         delete
       </button>
@@ -27,7 +50,7 @@ export default function DelButton({id}) {
             {/* Modal Header */}
             <div className="flex justify-between items-center py-3 px-4 border-b">
               <h3 id="modal-title" className="font-bold text-gray-800">
-                Delete Todo
+                Delete
               </h3>
               <button
                 type="button"
@@ -49,7 +72,7 @@ export default function DelButton({id}) {
 
             {/* Modal Body */}
             <div className="p-4">
-            <h3 className="font-bold text-gray-800">Are you sure you want to delete this task?</h3>
+            <h3 className="font-bold text-gray-800">Are you sure you want to delete this user?</h3>
   <p className="text-gray-600 mt-2">
     This action cannot be undone. Once you delete this task, it will be permanently removed from your list.
   </p>
@@ -68,11 +91,11 @@ export default function DelButton({id}) {
                 type="button"
                 className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none"
                 onClick={()=>{
-                    dispatch(deleteTask(id));
+                  HandleDelete()   
                     setIsModalOpen(false)
                 }}
               >
-                 Delete task
+                 Delete 
               </button>
             </div>
           </div>

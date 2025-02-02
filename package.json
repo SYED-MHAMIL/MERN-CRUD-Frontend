@@ -10,13 +10,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.4.2",
     "@reduxjs/toolkit": "^2.5.0",
     "axios": "^1.7.9",
+    "chart.js": "^4.4.7",
     "cookies-next": "^5.0.2",
     "next": "15.1.1",
+    "qrcode.react": "^4.2.0",
     "react": "^19.0.0",
+    "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "react-toastify": "^11.0.3",
+    "ui": "github:shadcn/ui",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

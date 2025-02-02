@@ -1,7 +1,9 @@
 "use client"
 import { Geist, Geist_Mono } from "next/font/google";
+import NavBar from "../components/navbar";
 import "./globals.css";
 import StoreProvider from "./storeProvider";
+import { ToastContainer } from "react-toastify";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,7 +25,8 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-    <StoreProvider>
+        <ToastContainer/>
+    <StoreProvider>   
         {children}
     </StoreProvider>
       </body>

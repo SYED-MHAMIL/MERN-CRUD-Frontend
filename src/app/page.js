@@ -5,10 +5,13 @@ import { useState } from "react";
 import { setCookie } from "cookies-next";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/lib/feature/userSlice";
+import { loginUser } from "../lib/feature/userSlice";
 import Link from "next/link";
+import LandingPage from "../components/landing";
 export default function Home() {
   const [loding,setLoading]=useState(false);
+  const [getStarted,setGetStarted]=useState(false);
+
   const [error,setError]=useState("");
   const dispatch = useDispatch();
   const router = useRouter()
@@ -48,7 +51,7 @@ export default function Home() {
   return (
      
      <>
-  <section className="bg-gray-50 min-h-screen flex items-center justify-center">
+ { getStarted ? <section className="bg-gray-50 min-h-screen flex items-center justify-center">
   <div className="px-6 py-8 w-full max-w-md bg-white rounded-lg shadow-md border border-gray-200">
   
    
@@ -139,7 +142,7 @@ export default function Home() {
       </p>
     </div>
   </div>
-</section>
+</section> : <LandingPage start={setGetStarted} /> }
 
 
      
