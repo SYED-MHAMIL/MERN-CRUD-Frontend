@@ -1,12 +1,11 @@
 
 
-export const BASE_URL=`http://localhost:4000/`
+export const BASE_URL=`https://hackathon-backend-xi.vercel.app/`
             
 
 export const ApiRoutes={
            signup:BASE_URL+"auth/register" ,
            login : BASE_URL+"auth/login",
-           getTasks:BASE_URL+"tasks",
-           postTasks:BASE_URL+"tasks",
+
            beneficary:BASE_URL+"api/beneficiaries"
 }
