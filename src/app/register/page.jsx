@@ -2,12 +2,12 @@
 import axios from "axios";
 import { ApiRoutes } from "../constant/url";
 import { useState } from "react";
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 // import { loginUser } from "@/lib/feature/userSlice";
 import Link from "next/link";
-
+import { useEffect } from "react";
 
 
 
@@ -20,6 +20,26 @@ export default function Home() {
   const dispatch = useDispatch();
   const router = useRouter()
   const [role, setRole] = useState(""); //
+ 
+ 
+  let data=JSON.parse(localStorage.getItem('userobj'))
+  let token= getCookie('token')
+  useEffect(()=>{
+  if (token  !== null) {
+    if (data?.userObj?.role == 'admin') {
+      router.push('/admin');  // Redirect to admin dashboard
+    } else if (data?.userObj?.role == 'receptionist') {
+      router.push('/receptionist-dashboard');  // Redirect to receptionist dashboard
+    } else {
+      router.push('/department-dashboard');  // Redirect to department dashboard
+    }
+   
+  }     
+    
+
+  },[])
+
+
   const signup=async(e)=>{
     e.preventDefault()
     
@@ -50,20 +70,11 @@ export default function Home() {
             router.push('/department-dashboard');  // Redirect to department dashboard
           }
       
-
-
         })
           .catch((err) => {
-
-            setLoading(false)
-            
-            setError(err.response?.data?.msg)
-     
-    
+            setLoading(false)        
+            setError(err.response?.data?.msg)        
           })
-  
-      
-     
   }
 
 

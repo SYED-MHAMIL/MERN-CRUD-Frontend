@@ -2,13 +2,14 @@
 import React, { useState,useEffect, useRef } from "react";
 import axios from "axios";
 import {QRCodeCanvas } from "qrcode.react"; // Import the QR code library
-import { ApiRoutes } from "../constant/url.js";
+import { ApiRoutes } from "../../constant/url.js";
 import { toast } from "react-toastify";
+import Link from "next/link.js";
 
 const CreateBeneficiary = () => {
   const [cnic, setCnic] = useState("");
   const [name, setName] = useState("");
-  const [email, setemail] = useState("");
+  const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [purpose, setPurpose] = useState("");
   const [department, setDepartment] = useState("");
@@ -26,6 +27,8 @@ const CreateBeneficiary = () => {
 
 
 
+
+
   const handleCreateBeneficiary = async () => {
     if (!cnic || !name || !email || !address || !purpose || !department) {
       toast.error("Please fill in all fields before submitting.",{
@@ -33,6 +36,7 @@ const CreateBeneficiary = () => {
       });
       return;
     }
+ 
 
 
     try {
@@ -66,7 +70,7 @@ const CreateBeneficiary = () => {
     });
       setCnic("");
       setName("");
-      setemail("");
+      setEmail("");
       setAddress("");
       setPurpose("");
       setDepartment("");
@@ -130,6 +134,27 @@ const CreateBeneficiary = () => {
 
   return (
     <div className="p-6 flex flex-col items-center text-black " >
+            <Link
+  href='/admin'
+  className="inline-flex fixed bottom-2 right-4 z-10 items-center border  border-indigo-300 px-3 py-1.5 rounded-md text-indigo-500 hover:bg-indigo-50"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    className="h-6 w-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M7 16l-4-4m0 0l4-4m-4 4h18"
+    ></path>
+  </svg>
+  <span className="ml-1 font-bold text-lg">Back</span>
+</Link>
+
       <h1 className="text-2xl font-bold mb-6 text-center">Create Beneficiary</h1>
    {!token &&   <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-xl font-semibold mb-4">Enter Beneficiary Details</h2>
@@ -149,10 +174,10 @@ const CreateBeneficiary = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
-            type="text"
-            placeholder="Enter email "
+            type="email"
+            placeholder="Enter email"
             value={email}
-            onChange={(e) => setemail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
@@ -221,6 +246,13 @@ const CreateBeneficiary = () => {
         >
           Print QR Code
         </button>
+
+      <button>
+        
+
+
+      </button>
+
       </div>
     </div>
           </>

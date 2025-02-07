@@ -2,16 +2,20 @@
 import React, { useState,useEffect, useRef } from "react";
 import axios from "axios";
 import {QRCodeCanvas } from "qrcode.react"; // Import the QR code library
-import { ApiRoutes } from "../constant/url.js";
+import { ApiRoutes } from "../../../constant/url.js";
 import { toast } from "react-toastify";
+import { useParams } from 'next/navigation';
 
-const CreateBeneficiary = () => {
+const EditBeneficiary = () => {
   const [cnic, setCnic] = useState("");
   const [name, setName] = useState("");
   const [email, setemail] = useState("");
   const [address, setAddress] = useState("");
   const [purpose, setPurpose] = useState("");
   const [department, setDepartment] = useState("");
+  const [beneficiaryData, setBeneficiaryData] = useState([]);
+  const [remarks, setRemarks] = useState(""); // State to store the generated token
+  const [status, setStatus] = useState(""); // State to store the generated token
   const [token, setToken] = useState(""); // State to store the generated token
   const printRef = useRef(null); // Reference for the printable section
 
@@ -23,26 +27,60 @@ const CreateBeneficiary = () => {
     }
   }, [token]);
 
+  const params = useParams(); // No need to unwrap in client components
+  const id = params?.id;
+   
 
 
+  const fetchBeneficiarybyid=async()=>{
+    try {
+     const beneDAta= await axios.get(`${ApiRoutes.beneficary}/${id}`)
+       console.log("beneficiaryData",beneDAta);
+       setBeneficiaryData(beneDAta)
+    } catch (error) {
+        console.log(error);
+        
+    }
+  }
 
-  const handleCreateBeneficiary = async () => {
-    if (!cnic || !name || !email || !address || !purpose || !department) {
+ 
+
+useEffect(()=>{
+     
+  fetchBeneficiarybyid()
+
+},[id])
+
+useEffect(() => {
+  setCnic(beneficiaryData?.data?.cnic || "");
+  setName(beneficiaryData?.data?.name || "");
+  setemail(beneficiaryData?.data?.email || "");
+  setAddress(beneficiaryData?.data?.address || "");
+  setPurpose(beneficiaryData?.data?.purpose || "");
+  // setDepartment(beneficiaryData?.data?.department || "");
+}, [beneficiaryData]);
+
+
+  const handleUpdateBeneficiary = async () => {
+    if (!cnic || !name || !email || !address || !purpose || !department ||!status || !remarks) {
       toast.error("Please fill in all fields before submitting.",{
         position:'top-center'
       });
       return;
     }
-
+    
+  
 
     try {
       // Step 1: Send data to backend to create beneficiary
-      await axios.post(ApiRoutes.beneficary, {
+      await axios.put(`${ApiRoutes.beneficary}/admin/${id}`, {
         cnic,
         name,
         email,
         address,
         purpose,
+        remarks,
+        status,
         department,
       });
 
@@ -61,7 +99,7 @@ const CreateBeneficiary = () => {
       setToken(generatedToken); // Set the token in state
 
       // Reset form fields
-    toast.success("Beneficiary created successfully!",{
+    toast.success("Beneficiary Updated successfully!",{
       position: 'top-center'
     });
       setCnic("");
@@ -189,11 +227,41 @@ const CreateBeneficiary = () => {
               <option value="medical assistance">Medical Assistance</option>
             </select>
           </div>
+
+          <h3 className="text-lg font-medium mt-4">History:</h3>
+            <ul className="list-disc list-inside">
+              {beneficiaryData?.data?.history.map((entry, index) => (
+                <li key={index}>
+                  <strong>Date:</strong> {new Date(entry.date).toLocaleDateString()} -{" "}
+                  <strong>Status:</strong> {entry.status} -{" "}
+                 <br /> <strong className="">Remarks:</strong> {entry.remarks || "N/A"}
+                </li>
+              ))}
+            </ul>
+
+          <div className="mt-6">
+              <h3 className="text-lg font-medium">Update Assistance Status</h3>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+              <textarea
+                placeholder="Enter Remarks"
+                value={remarks}
+                onChange={(e) => setRemarks(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2"
+              />
+           
+            </div>
           <button
-            onClick={handleCreateBeneficiary}
+            onClick={handleUpdateBeneficiary}
             className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            Create Beneficiary
+            Update Beneficiary !
           </button>
         </div>
 
@@ -231,4 +299,4 @@ const CreateBeneficiary = () => {
   );
 };
 
-export default CreateBeneficiary;
+export default EditBeneficiary;

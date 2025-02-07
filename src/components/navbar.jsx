@@ -1,6 +1,23 @@
+"use client"
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { logOutUser } from '../lib/feature/userSlice'
+import { setCookie } from 'cookies-next'
+import { useRouter } from 'next/navigation'
+
 
 const NavBar = () => {
+
+  const router=useRouter()
+
+
+const logOut=()=>{
+   useDispatch(logOutUser())
+   setCookie('token',null)
+   router.push('/')
+}
+
+
   return (
     <nav className="bg-white border-gray-200 ">
     <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -14,7 +31,7 @@ const NavBar = () => {
         <button
           type="button"
           className="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
-        >
+        onClick={logOut}>
          Log out  
         </button>
       </div>

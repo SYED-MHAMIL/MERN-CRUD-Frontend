@@ -2,28 +2,13 @@
 import React, { useState } from 'react';
 import { ApiRoutes } from '../app/constant/url';
 import { toast } from 'react-toastify';
+import Link from 'next/link'
 
 
-export default function DelButton({id}) {
+export default function EditByAdmin({id}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
-const HandleDelete=async()=>{
- 
-  try {
-    
-      const data= await axios.delete(`${ApiRoutes.beneficary}/${id}`)
-         console.log("deleted data ====== =>>>",  data);
-         
-           
-  } catch (error) {
-      console.log(error);
-      
-  }
-
-
-
-}
 
 
 
@@ -72,31 +57,30 @@ const HandleDelete=async()=>{
 
             {/* Modal Body */}
             <div className="p-4">
-            <h3 className="font-bold text-gray-800">Are you sure you want to delete this user?</h3>
+            <h3 className="font-bold text-gray-800">Are you sure you want to edit this user?</h3>
   <p className="text-gray-600 mt-2">
-    This action cannot be undone. Once you delete this task, it will be permanently removed from your list.
+    This action cannot be undone. Once you delete this task, it will be permanently eedited from your list.
   </p>
             </div>
 
             {/* Modal Footer */}
             <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t">
-              <button
+                
+
+           <Link href={'/admin/edit-user'}><button
                 type="button"
-                onClick={() => setIsModalOpen(false)}
                 className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none"
               >
-                Close
-              </button>
-              <button
+                Edit User
+              </button></Link>
+
+              <Link href={'/admin/edit-userHistory'}><button
                 type="button"
                 className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none"
-                onClick={()=>{
-                  HandleDelete()   
-                    setIsModalOpen(false)
-                }}
+                
               >
-                 Delete 
-              </button>
+                Edit User History
+              </button></Link>
             </div>
           </div>
         </div>

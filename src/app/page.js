@@ -1,8 +1,8 @@
 "use client"
 import axios from "axios";
 import { ApiRoutes } from "./constant/url";
-import { useState } from "react";
-import { setCookie } from "cookies-next";
+import { useEffect, useState } from "react";
+import { getCookie, setCookie } from "cookies-next";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { loginUser } from "../lib/feature/userSlice";
@@ -15,6 +15,24 @@ export default function Home() {
   const [error,setError]=useState("");
   const dispatch = useDispatch();
   const router = useRouter()
+  let data=JSON.parse(localStorage.getItem('userobj'))
+  const token=getCookie('token')
+  useEffect(()=>{
+  if (token) {
+    if (data?.userObj?.role == 'admin') {
+      router.push('/admin');  // Redirect to admin dashboard
+    } else if (data?.userObj?.role == 'receptionist') {
+      router.push('/receptionist-dashboard');  // Redirect to receptionist dashboard
+    } else {
+      router.push('/department-dashboard');  // Redirect to department dashboard
+    }
+   
+  }     
+    
+
+  },[])
+
+
 
   const login=async(e)=>{
     e.preventDefault()
@@ -30,8 +48,15 @@ export default function Home() {
           setCookie('token', res?.data?.data?.token)
           dispatch(loginUser(res.data?.data?.user))
           setLoading(false)
-          
-          router.push("/task")
+          if (res?.data?.data?.userObj?.role == 'admin') {
+            router.push('/admin');  // Redirect to admin dashboard
+          } else if (res?.data?.data?.userObj?.role == 'receptionist') {
+            router.push('/receptionist-dashboard');  // Redirect to receptionist dashboard
+          } else {
+            router.push('/department-dashboard');  // Redirect to department dashboard
+          }
+      
+
         })
           .catch((err) => {
 
