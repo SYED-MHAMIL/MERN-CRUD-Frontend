@@ -15,9 +15,13 @@ export default function Home() {
   const [error,setError]=useState("");
   const dispatch = useDispatch();
   const router = useRouter()
-  let data=JSON.parse(localStorage.getItem('userobj'))
+  let data;
+  if (typeof window !== "undefined") {  // Ensure it's running in the browser
+    data = JSON.parse(localStorage.getItem("userobj"));
+  }
   const token=getCookie('token')
   useEffect(()=>{
+    if (typeof window !== "undefined") { 
   if (token) {
     if (data?.userObj?.role == 'admin') {
       router.push('/admin');  // Redirect to admin dashboard
@@ -27,7 +31,8 @@ export default function Home() {
       router.push('/department-dashboard');  // Redirect to department dashboard
     }
    
-  }     
+  }  
+}   
     
 
   },[])

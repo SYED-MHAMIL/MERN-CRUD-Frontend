@@ -22,9 +22,14 @@ export default function Home() {
   const [role, setRole] = useState(""); //
  
  
-  let data=JSON.parse(localStorage.getItem('userobj'))
+ let data;
+  if (typeof window !== "undefined") {  // Ensure it's running in the browser
+    data = JSON.parse(localStorage.getItem("userobj"));
+  }
   let token= getCookie('token')
   useEffect(()=>{
+  if (typeof window !== "undefined") {  // Ensure it's running in the browser
+
   if (token  !== null) {
     if (data?.userObj?.role == 'admin') {
       router.push('/admin');  // Redirect to admin dashboard
@@ -35,7 +40,7 @@ export default function Home() {
     }
    
   }     
-    
+}
 
   },[])
 
